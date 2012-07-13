@@ -20,10 +20,21 @@
 #include <stdint.h>
 #include <sys/cdefs.h>
 #include <sys/types.h>
-
+#include <cutils/log.h>
 #include <hardware/hardware.h>
 
 __BEGIN_DECLS
+
+#if  PLATFORM_SDK_VERSION >= 16  //for platform version >= android4.1.1 
+
+#define LOGV(fmt,args...) ALOGV(fmt,##args)
+#define LOGD(fmt,args...) ALOGD(fmt,##args)
+#define LOGI(fmt,args...) ALOGI(fmt,##args)
+#define LOGW(fmt,args...) ALOGW(fmt,##args)
+#define LOGE(fmt,args...) ALOGE(fmt,##args)
+
+#endif
+
 
 /**
  * The id of this module

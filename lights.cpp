@@ -23,7 +23,6 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include <cutils/log.h>
 #include <cutils/atomic.h>
 
 /*****************************************************************************/
