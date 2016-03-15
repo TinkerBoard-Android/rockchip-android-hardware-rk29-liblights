@@ -29,6 +29,7 @@
 
 /*****************************************************************************/
 #define BACKLIGHT_PATH	"/sys/class/backlight/rk28_bl/brightness"
+#define BACKLIGHT_PATH1 "/sys/class/backlight/backlight/brightness" // for kernel 4.4
 #define BUTTON_LED_PATH "sys/class/leds/rk29_key_led/brightness"
 #define BATTERY_LED_PATH "sys/class/leds/battery_led/brightness"
 int g_bl_fd = 0;   //backlight fd
@@ -100,6 +101,8 @@ int set_backlight_light(struct light_device_t* dev, struct light_state_t const* 
 	int brightness = rgb_to_brightness(state);
 	pthread_mutex_lock(&g_lock);
 	err = write_int(BACKLIGHT_PATH, brightness);
+        if (err !=0)
+            err = write_int(BACKLIGHT_PATH1, brightness);
 	pthread_mutex_unlock(&g_lock);
 	return 0;
 }
