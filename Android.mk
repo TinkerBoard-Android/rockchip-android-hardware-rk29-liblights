@@ -14,24 +14,14 @@
 
 
 LOCAL_PATH := $(call my-dir)
-
 # HAL module implemenation, not prelinked and stored in
 # hw/<LIGHTS_HARDWARE_MODULE_ID>.default.so
 include $(CLEAR_VARS)
-LOCAL_PRELINK_MODULE := false
-#LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
-ifneq (1,$(strip $(shell expr $(PLATFORM_VERSION) \>= 5.0)))
-LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
-else
-ifneq ($(strip $(TARGET_2ND_ARCH)), )
-LOCAL_MULTILIB := both
-endif
-LOCAL_MODULE_RELATIVE_PATH := hw
-endif
 
+LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_SHARED_LIBRARIES := liblog
 LOCAL_SRC_FILES := lights.cpp
 LOCAL_MODULE := lights.$(TARGET_BOARD_PLATFORM)
 LOCAL_MODULE_TAGS := optional
-LOCAL_CFLAGS:=-DPLATFORM_SDK_VERSION=$(PLATFORM_SDK_VERSION)
+
 include $(BUILD_SHARED_LIBRARY)
