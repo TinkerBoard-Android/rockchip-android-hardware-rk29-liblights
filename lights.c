@@ -51,6 +51,13 @@ char const*const BLUE_LED_FILE
 
 char const*const LCD_FILE
         = "/sys/class/backlight/backlight/brightness";
+
+char const*const TINKER_LCD_0_FILE
+        = "/sys/class/backlight/panel_backlight-0/brightness";
+
+char const*const TINKER_LCD_1_FILE
+        = "/sys/class/backlight/panel_backlight-1/brightness";
+
 char const*const LCD_FILE_31
         = "/sys/class/backlight/rk28_bl/brightness";
 
@@ -126,6 +133,12 @@ set_light_backlight(struct light_device_t* dev,
 	/* support for kernel3.10 */
 	if (err !=0)
         err = write_int(LCD_FILE_31, brightness);
+
+	if (access(TINKER_LCD_0_FILE, F_OK) == 0)
+		err = write_int(TINKER_LCD_0_FILE, brightness);
+
+	if (access(TINKER_LCD_1_FILE, F_OK) == 0)
+		err = write_int(TINKER_LCD_1_FILE, brightness);
     pthread_mutex_unlock(&g_lock);
     return err;
 }
@@ -313,7 +326,8 @@ static int open_lights(const struct hw_module_t* module, char const* name,
 
     if (0 == strcmp(LIGHT_ID_BACKLIGHT, name)) {
         set_light = set_light_backlight;
-        if ((access(LCD_FILE, F_OK) < 0) && (access(LCD_FILE_31, F_OK) < 0))
+        if ((access(LCD_FILE, F_OK) < 0) && (access(LCD_FILE_31, F_OK) < 0) &&
+			(access(TINKER_LCD_0_FILE, F_OK) < 0) && (access(TINKER_LCD_1_FILE, F_OK) < 0))
             return -ENOSYS;
     }
     else if (0 == strcmp(LIGHT_ID_BATTERY, name)) {
